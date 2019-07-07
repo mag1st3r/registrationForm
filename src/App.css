@@ -1,0 +1,33 @@
+body {
+    font-size: 12px;
+}
+
+.register-form {
+    margin: 5% 5%;
+}
+
+.btn {
+    margin: 0 15px;
+}
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.was-validated .form-control:valid, .form-control.is-valid {
+    background-position: center right calc(1rem + 0.1875rem);
+}
+.was-validated .form-control:invalid, .form-control.is-invalid {
+    background-position: center right calc(1rem + 0.1875rem);
+}
+
+.card-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+}
