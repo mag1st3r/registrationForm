@@ -1,6 +1,6 @@
 import React from 'react';
 import ServicesAPI from '../ServicesAPI';
-
+import Loader from 'react-loader-spinner'
 const servicesAPI = new ServicesAPI();
 
 const urlList = ["countries", "states", "cities", "users"];
@@ -93,7 +93,13 @@ class UserList extends React.Component {
         const states = this.state.dataAPI[1];
         const cities = this.state.dataAPI[2];
 
-        if(!isLoading) { return <div> is Loading </div> }
+        if(!isLoading) {
+            return <div className="loader"><Loader
+                type="Triangle"
+                color="#00BFFF"
+                height="100"
+                width="100"
+            /></div>}
         else {
             return (
                 <div className="col-sm-8">

@@ -2,6 +2,7 @@ import React from 'react';
 import ServicesAPI from '../ServicesAPI';
 import createUser from '../utils/createUser';
 import cx from "classnames";
+import Loader from 'react-loader-spinner'
 
 const urlList = ["countries", "states", "cities", "users"];
 
@@ -11,7 +12,7 @@ const servicesAPI = new ServicesAPI();
 function Selected({data, onChange, classes, validState, value}) {
     return(
         <div className="form-group ">
-            <label htmlFor={`select${classes}`}> {classes} </label>
+            <label htmlFor={`select${classes}`}> {classes} <span className="required">*</span></label>
             <select
                 name={classes}
                 id={`select${classes}`}
@@ -80,7 +81,7 @@ class RegisterPage extends React.Component {
         let { validationErrors, inputsValidState } = this.state;
         switch (fieldName) {
             case 'name':
-                const nameCondition = value.match(/^[a-zа-яё]+$/i);
+                const nameCondition = value.match(/^[a-zа-яё\s]+$/i);
                 inputsValidState.name = nameCondition
                     ? 'valid'
                     : 'invalid';
@@ -182,8 +183,8 @@ class RegisterPage extends React.Component {
 
     onSubmit =  (e) => {
         e.preventDefault();
-        const {country, state, city} = this.state;
-        if (country !== "" && state !== "" && city !== "") {
+        const {country, state, city, inputsValidState} = this.state;
+        if (country !== "" && state !== "" && city !== "" && inputsValidState.name !== "invalid" && inputsValidState.about !== "invalid") {
             const newUser = createUser({...this.state});
             this.setUser(newUser);
         } else {
@@ -208,7 +209,12 @@ class RegisterPage extends React.Component {
 
     render (){
         const {dataAPI, country, state, validationErrors, inputsValidState, loaded} = this.state;
-        if(!loaded) { return <div>isLoading</div>}
+        if(!loaded) { return <div className="loader"><Loader
+            type="Triangle"
+            color="#00BFFF"
+            height="100"
+            width="100"
+        /></div> }
         else {
 
             const countries =  dataAPI[0];
@@ -221,7 +227,7 @@ class RegisterPage extends React.Component {
                     return item.state_id === state })
                    : new Array(1)
 
-            const nameInputClass = cx({[`form-control is-${inputsValidState.name}`]: true});
+            const nameInputClass = cx({[`form-control is-${inputsValidState.name}`]: true});//hightlites class for input
             const nameErrorClass = cx({[`${inputsValidState.name}-feedback`]: true});
             const emailInputClass = cx({[`form-control is-${inputsValidState.email}`]: true});
             const emailErrorClass = cx({[`${inputsValidState.email}-feedback`]: true});
@@ -237,7 +243,7 @@ class RegisterPage extends React.Component {
                 <div className="col-sm-4">
                     <form className='register-form' onSubmit={this.onSubmit}>
                         <div className="form-group ">
-                            <label htmlFor="inputName">Name</label>
+                            <label htmlFor="inputName">Name<span className="required">*</span></label>
                             <input type="text"
                                    name="name"
                                    id='inputName'
@@ -251,7 +257,7 @@ class RegisterPage extends React.Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="inputEmail"> Email </label>
+                            <label htmlFor="inputEmail"> Email <span className="required">*</span></label>
                             <input type="email"
                                    name="email"
                                    className={emailInputClass}
@@ -288,7 +294,7 @@ class RegisterPage extends React.Component {
                             onChange={(e) =>{ this.onInputTextChange(e) }}
                         />
                         <div className="form-group ">
-                            <label htmlFor="inputTel"> Phone Number </label>
+                            <label htmlFor="inputTel"> Phone Number <span className="required">*</span></label>
                             <input type="tel"
                                    pattern="^[ 0-9]+$"
                                    title="Only a Numbers"

@@ -39,3 +39,15 @@ body {
 .table-responsive-sm {
     margin: 5.3% 2%;
 }
+
+.required {
+    font-size: 25px;
+    color: red;
+    content: " *";
+    position: absolute;
+
+    left: 10px;
+}
+.loader {
+    margin: 0 auto;
+}
