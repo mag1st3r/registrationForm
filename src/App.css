@@ -31,3 +31,11 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+.table th, .table td {
+    padding: 0.5rem;
+}
+
+.table-responsive-sm {
+    margin: 5.3% 2%;
+}

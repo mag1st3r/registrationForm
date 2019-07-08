@@ -89,7 +89,7 @@ class RegisterPage extends React.Component {
                     : 'Can use only Letters!';
                 break;
             case 'email':
-                const emailCondition = value.match(/[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*/);
+                const emailCondition = value.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
                 inputsValidState.email = emailCondition
                     ? 'valid'
                     : 'invalid';
@@ -139,12 +139,13 @@ class RegisterPage extends React.Component {
         this.setState({validationErrors, inputsValidState})
     }
 
-     setUser = async(newUser) => {
+    setUser = async(newUser) => {
          await servicesAPI.addNewUser(newUser).then( (body) => {
              this.resetForm();
             this.props.refreshData()
          })
     }
+
     resetForm() {
         this.setState({
             id: '',
@@ -214,11 +215,11 @@ class RegisterPage extends React.Component {
 
             const states = country !== '' ? dataAPI[1].filter( (item) => {
                     return item.country_id === country})
-                : new Array(1);
+                   : new Array(1);
 
             const cities = state !== '' ? dataAPI[2].filter ( (item) => {
                     return item.state_id === state })
-                : new Array(1)
+                   : new Array(1)
 
             const nameInputClass = cx({[`form-control is-${inputsValidState.name}`]: true});
             const nameErrorClass = cx({[`${inputsValidState.name}-feedback`]: true});
@@ -232,8 +233,6 @@ class RegisterPage extends React.Component {
             const statelInputClass = cx({[`form-control is-${inputsValidState.state}`]: true});
             const citylInputClass = cx({[`form-control is-${inputsValidState.city}`]: true});
 
-            console.log(this.state);
-            console.log(this.state.dataAPI);
             return(
                 <div className="col-sm-4">
                     <form className='register-form' onSubmit={this.onSubmit}>
@@ -253,11 +252,12 @@ class RegisterPage extends React.Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="inputEmail"> Email </label>
-                            <input type="text"
+                            <input type="email"
                                    name="email"
                                    className={emailInputClass}
                                    id='inputEmail'
-                                   pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+                                   title="Contact's email (format: xxx@xxx.xxx)"
+                                   pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
                                    value={this.state.email}
                                    onChange={ (e) =>{ this.onInputTextChange(e) }}
                                    required
@@ -289,7 +289,9 @@ class RegisterPage extends React.Component {
                         />
                         <div className="form-group ">
                             <label htmlFor="inputTel"> Phone Number </label>
-                            <input type="number"
+                            <input type="tel"
+                                   pattern="^[ 0-9]+$"
+                                   title="Only a Numbers"
                                    name="phone"
                                    className={phonelInputClass}
                                    id='inputTel'

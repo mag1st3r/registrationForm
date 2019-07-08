@@ -9,6 +9,7 @@ function find(id, arr) {
 
     return arr.find(x => +x.id === +id).name;
 }
+
 function getNormalDate(date) {
     const savedDate = new Date(date);
     return  d2(savedDate.getDate()) + "-" + d2(savedDate.getMonth() + 1) + "-" + savedDate.getFullYear();
@@ -17,9 +18,11 @@ function getNormalDate(date) {
 function Table({data, country, states, cities}) {
 
     return (
+    <div className='table-responsive-sm'>
         <table className="table">
             <thead>
             <tr>
+                <th>№</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -28,8 +31,9 @@ function Table({data, country, states, cities}) {
             </tr>
             </thead>
             <tbody>
-            { data.map(item =>(
+            { data.map( (item, index) =>(
                 <tr key={item.id}>
+                    <td>{index+1}</td>
                     <td>{item.name}</td>
                     <td>{item.email}</td>
                     <td>{item.phone_number}</td>
@@ -39,8 +43,10 @@ function Table({data, country, states, cities}) {
             ))}
             </tbody>
         </table>
+    </div>
     )
 }
+
 function d2( n ) {
     return (n < 10 ? "0" : "") + n;
 }
@@ -82,7 +88,6 @@ class UserList extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const {isLoading } = this.state;
         const country = this.state.dataAPI[0];
         const states = this.state.dataAPI[1];
@@ -90,16 +95,14 @@ class UserList extends React.Component {
 
         if(!isLoading) { return <div> is Loading </div> }
         else {
-
             return (
                 <div className="col-sm-8">
-
                     <div className="item-list list-group">
+
                         <Table data={this.state.dataAPI[3]}
                                country={country}
                                states={states}
                                cities={cities}
-
                         />
 
                     </div>
